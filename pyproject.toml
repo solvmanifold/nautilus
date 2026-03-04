@@ -1,5 +1,5 @@
 [project]
-name = "nemo"
+name = "nautilus"
 version = "0.1.0"
 description = "Terminal chat interface for Nemotron 3 Nano running locally via MLX on Apple Silicon"
 readme = "README.md"

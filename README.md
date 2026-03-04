@@ -1,4 +1,4 @@
-# nemo
+# nautilus
 
 A minimal terminal chat interface for [Nemotron 3 Nano](https://huggingface.co/mlx-community/NVIDIA-Nemotron-3-Nano-30B-A3B-4bit) running locally via MLX on Apple Silicon.
 

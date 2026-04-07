@@ -100,7 +100,10 @@ def stream_response_openai(stream, show_thinking: bool = True) -> str:
     reasoning_parts = []
     answer_parts = []
 
-    for chunk in stream:
+    stream_iter = iter(stream)
+
+    # Phase 1: drain reasoning_content in gray
+    for chunk in stream_iter:
         delta = chunk.choices[0].delta
         reasoning = getattr(delta, "reasoning_content", None)
         content = delta.content
@@ -111,15 +114,24 @@ def stream_response_openai(stream, show_thinking: bool = True) -> str:
                 sys.stdout.write(GRAY + reasoning)
                 sys.stdout.flush()
         elif content:
-            if reasoning_parts and not answer_parts:
-                if show_thinking:
-                    sys.stdout.write(RESET + "\n")
-                    sys.stdout.flush()
+            # First content token — close out the thinking block
+            if reasoning_parts and show_thinking:
+                sys.stdout.write(RESET + "\n")
+                sys.stdout.flush()
             answer_parts.append(content)
+            break
 
-    answer = "".join(answer_parts).strip()
-    if answer:
-        console.print(Markdown(answer))
+    # Phase 2: stream remaining content live, snap to markdown when done
+    with Live("", refresh_per_second=15, console=console) as live:
+        for chunk in stream_iter:
+            content = chunk.choices[0].delta.content
+            if content:
+                answer_parts.append(content)
+            live.update(Text("".join(answer_parts)))
+
+        answer = "".join(answer_parts).strip()
+        if answer:
+            live.update(Markdown(answer))
 
     return answer
 

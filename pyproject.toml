@@ -1,10 +1,10 @@
 [project]
 name = "nautilus"
-version = "0.1.0"
-description = "Terminal chat interface for Nemotron 3 Nano running locally via MLX on Apple Silicon"
+version = "0.2.0"
+description = "Terminal chat interface for Nemotron-3-Super running locally via TensorRT-LLM on DGX Spark"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "mlx-lm>=0.30.7",
+    "openai>=1.0.0",
     "rich>=14.0.0",
 ]
